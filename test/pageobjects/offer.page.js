@@ -19,9 +19,8 @@ class OfferPage extends Page {
         this.offerNumberWrapper.waitForDisplayed({timeout: 15000})
         offerNumber = this.offerNumberWrapper.getText();
         pageCount = (this.pageCountWrapper.getText().trim().split(' '))[1];
-        console.log('Total offers: ' + offerNumber, '\nTotal pages: ' + pageCount);
         do {
-            console.log('Page'+currentPage);
+            console.log('Page '+currentPage + ' of ' + pageCount);
             itemOne = this.items[0].$('span.title').getText();
             this.items.forEach(item => {
                 itemCounter++;
@@ -46,7 +45,7 @@ class OfferPage extends Page {
             }
             currentPage++;
         } while (currentPage <= pageCount);
-        console.log(itemCounter);
+        console.log('Total items checked: ' + itemCounter + ' out of ' + offerNumber);
         assert.equal(itemCounter,offerNumber, '!!!!! Some items are missing !!!!!');
     }
 
