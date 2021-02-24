@@ -6,7 +6,6 @@ class OfferPage extends Page {
 
     get offerNumberWrapper() {return $('span.count.bold')};
     get pageCountWrapper() {return $('span.page-count')};
-    get currentPageWrapper() {return $('span.page-count')};
     get nextPageChevron() {return $('i.icon-chevron-right')};
     get items() {return $$('ul.product-list>li.js-list')};
 
@@ -40,7 +39,6 @@ class OfferPage extends Page {
             })
             if (currentPage < pageCount) {
                 this.nextPageChevron.click();
-                // browser.waitUntil( () => browser.getUrl().includes('page='+currentPage))
                 browser.waitUntil( () => this.items[0].$('span.title').getText() != itemOne, {timeout: 15000});
             }
             currentPage++;
