@@ -30,7 +30,7 @@ class OfferPage extends Page {
                         priceWas = item.$('div[class="price ng-star-inserted"]:nth-child(2) span[class=value]').getText().slice(1);
                         this.recordItem(item, priceNow, priceWas);
                     }
-                    if (itemHTML.includes('MEMBER OFFER')) {
+                    if (itemHTML.includes('MEMBER OFFER') && itemHTML.includes('Non-member')) {
                         priceNow = item.$('span.card-price.font-din-condensed').getText().slice(1);
                         priceWas = item.$('span*=Non-member').getText().split(' ')[2].slice(1);
                         this.recordItem(item, priceNow, priceWas);
