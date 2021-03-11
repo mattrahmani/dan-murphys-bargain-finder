@@ -51,7 +51,7 @@ class OfferPage extends Page {
         let percent, name, filePath;
         percent = ((1-(priceNow/priceWas))*100).toFixed(0);
         if (percent >= 20) {
-            name = item.$('h2').getText().split('\n').join(' ');
+            name = item.$('h2').getText().split('\n').join(' ').split('/').join(' ');
             filePath = 'screenshots/' + percent + ' ' + name + '.png';
             if (!fs.existsSync(filePath)) {
                 item.scrollIntoView();
