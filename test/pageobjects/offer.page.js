@@ -39,7 +39,7 @@ class OfferPage extends Page {
             })
             if (currentPage < pageCount) {
                 this.nextPageChevron.click();
-                browser.waitUntil( () => this.items[0].$('span.title').getText() != itemOne, {timeout: 15000});
+                browser.waitUntil( () => this.items[0].$('span.title').getText() != itemOne, {timeout: 20000});
             }
             currentPage++;
         } while (currentPage <= pageCount);
