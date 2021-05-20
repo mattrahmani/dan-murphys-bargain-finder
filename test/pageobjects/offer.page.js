@@ -15,7 +15,7 @@ class OfferPage extends Page {
 
     findBargains() {
         let offerNumber, pageCount, itemHTML, priceNow, priceWas, itemOne, itemCounter = 0, currentPage = 1;
-        this.offerNumberWrapper.waitForDisplayed({timeout: 15000})
+        this.offerNumberWrapper.waitForDisplayed({timeout: 20000})
         offerNumber = this.offerNumberWrapper.getText();
         pageCount = (this.pageCountWrapper.getText().trim().split(' '))[1];
         do {
