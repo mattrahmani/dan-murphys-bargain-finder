@@ -55,7 +55,7 @@ class OfferPage extends Page {
             filePath = 'screenshots/' + percent + ' ' + name + '.png';
             if (!fs.existsSync(filePath)) {
                 item.scrollIntoView(false);
-                browser.waitUntil( ()=> item.$('img').isDisplayed());
+                item.$('img').waitForDisplayed({timeout: 5000});
                 this.drawHighlight(item.$('div.product-content'));
                 browser.saveScreenshot(filePath);
                 this.removeHighlight(item.$('div.product-content'));
