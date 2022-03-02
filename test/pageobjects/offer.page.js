@@ -42,7 +42,7 @@ class OfferPage extends Page {
                 browser.waitUntil(() => this.items[0].$('span.title').getText() != itemOne, { timeout: 20000 });
             }
             currentPage++;
-        } while (currentPage <= pageCount);
+        } while (currentPage <= 1/*pageCount*/);
         console.log('Total items checked: ' + itemCounter + ' out of ' + offerNumber);
         assert.equal(itemCounter, offerNumber, '!!!!! Some items are missing !!!!!');
     }
@@ -52,8 +52,12 @@ class OfferPage extends Page {
         percent = ((1 - (priceNow / priceWas)) * 100).toFixed(0);
         if (percent >= 20) {
             name = item.$('h2').getText().split('\n').join(' ').split('/').join(' ');
-            filePath = 'screenshots/' + percent + ' ' + name + '.png';
-            if (!fs.existsSync(filePath)) {
+
+            var date = new Date();
+            var today = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+            filePath = 'screenshots/' + today + '--> ' + percent + ' ' + name + '.png';
+
+            if (!fs.existsSync(filePath.split(' ').join(' ',1))) {
                 item.scrollIntoView(false);
                 browser.waitUntil(() => {
                     return item.$('img').isDisplayed();
