@@ -42,7 +42,7 @@ class OfferPage extends Page {
                 browser.waitUntil(() => this.items[0].$('span.title').getText() != itemOne, { timeout: 20000 });
             }
             currentPage++;
-        } while (currentPage <= 1/*pageCount*/);
+        } while (currentPage <= pageCount);
         console.log('Total items checked: ' + itemCounter + ' out of ' + offerNumber);
         assert.equal(itemCounter, offerNumber, '!!!!! Some items are missing !!!!!');
     }
