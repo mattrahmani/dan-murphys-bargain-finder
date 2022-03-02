@@ -54,7 +54,7 @@ class OfferPage extends Page {
             name = item.$('h2').getText().split('\n').join(' ').split('/').join(' ');
 
             var date = new Date();
-            var today = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+            var today = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
             filePath = 'screenshots/' + today + '--> ' + percent + ' ' + name + '.png';
 
             if (!fs.existsSync(filePath.split(' ').join(' ',1))) {
