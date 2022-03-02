@@ -15,7 +15,7 @@ class OfferPage extends Page {
 
     findBargains() {
         let offerNumber, pageCount, itemHTML, priceNow, priceWas, itemOne, itemCounter = 0, currentPage = 1;
-        this.offerNumberWrapper.waitForDisplayed({ timeout: 20000 })
+        this.offerNumberWrapper.waitForDisplayed({ timeout: 30000 })
         offerNumber = this.offerNumberWrapper.getText();
         pageCount = (this.pageCountWrapper.getText().trim().split(' '))[1];
         do {
@@ -30,9 +30,9 @@ class OfferPage extends Page {
                         priceWas = item.$('div[class="price ng-star-inserted"]:nth-child(2) span[class=value]').getText().slice(1);
                         this.recordItem(item, priceNow, priceWas);
                     }
-                    if (itemHTML.includes('MEMBER OFFER') && itemHTML.includes('Non-member')) {
+                    if (itemHTML.includes('MEMBER OFFER') && itemHTML.includes('Non-Member')) {
                         priceNow = item.$('span.card-price.font-din-condensed').getText().slice(1);
-                        priceWas = item.$('span*=Non-member').getText().split(' ')[2].slice(1);
+                        priceWas = item.$('span*=Non-Member').getText().split(' ')[1].slice(1);
                         this.recordItem(item, priceNow, priceWas);
                     }
                 }
