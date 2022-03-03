@@ -29,7 +29,7 @@ class OfferPage extends Page {
 
     findBargains() {
         let offerNumber, pageCount, itemHTML, priceNow, priceWas, itemOne, itemCounter = 0, currentPage = 1;
-        this.offerNumberWrapper.waitForDisplayed({ timeout: 30000 })
+        this.offerNumberWrapper.waitForDisplayed({ timeout: 60000 })
         offerNumber = this.offerNumberWrapper.getText();
         pageCount = (this.pageCountWrapper.getText().trim().split(' '))[1];
         do {
@@ -64,14 +64,14 @@ class OfferPage extends Page {
     recordItem(item, priceNow, priceWas) {
         let percent, name, filePath;
         percent = ((1 - (priceNow / priceWas)) * 100).toFixed(0);
-        if (percent >= 20) {
-            name = item.$('h2').getText().split('\n').join(' ').split('/').join(' ');
+        if (percent >= Number(discount)) {
+        name = item.$('h2').getText().split('\n').join(' ').split('/').join(' ');
             let itemName = percent + ' ' + name + '.png';
 
             let date = new Date();
             let today = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
             filePath = 'screenshots/' + today + '--> ' + percent + ' ' + name + '.png';
-            
+
             if (!existingItems.includes(itemName)) {
                 item.scrollIntoView(false);
                 browser.waitUntil(() => {
