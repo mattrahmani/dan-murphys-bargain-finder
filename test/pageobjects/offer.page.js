@@ -1,6 +1,8 @@
 const Page = require('./page');
 const fs = require('fs');
 const { assert } = require('chai');
+const path = require('path');
+let existingItems;
 
 class OfferPage extends Page {
 
@@ -8,6 +10,18 @@ class OfferPage extends Page {
     get pageCountWrapper() { return $('span.page-count') };
     get nextPageChevron() { return $('i.icon-chevron-right') };
     get items() { return $$('ul.product-list>li.js-list') };
+
+    getExistingItems() {
+        existingItems = [];
+        const directoryPath = path.join('screenshots/');
+        fs.readdir(directoryPath, function (err, files) {
+            files.forEach(function (file) {
+                let fileName = file.toString().split(' ').slice(1).join(' ');
+                existingItems.push(fileName);
+            });
+        });
+        return existingItems;
+    }
 
     open(extension) {
         return super.open(extension);
@@ -39,7 +53,7 @@ class OfferPage extends Page {
             })
             if (currentPage < pageCount) {
                 this.nextPageChevron.click();
-                browser.waitUntil(() => this.items[0].$('span.title').getText() != itemOne, { timeout: 20000 });
+                browser.waitUntil(() => this.items[0].$('span.title').getText() != itemOne, { timeout: 30000 });
             }
             currentPage++;
         } while (currentPage <= pageCount);
@@ -52,12 +66,13 @@ class OfferPage extends Page {
         percent = ((1 - (priceNow / priceWas)) * 100).toFixed(0);
         if (percent >= 20) {
             name = item.$('h2').getText().split('\n').join(' ').split('/').join(' ');
+            let itemName = percent + ' ' + name + '.png';
 
-            var date = new Date();
-            var today = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+            let date = new Date();
+            let today = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
             filePath = 'screenshots/' + today + '--> ' + percent + ' ' + name + '.png';
-
-            if (!fs.existsSync(filePath.split(' ').join(' ',1))) {
+            
+            if (!existingItems.includes(itemName)) {
                 item.scrollIntoView(false);
                 browser.waitUntil(() => {
                     return item.$('img').isDisplayed();
@@ -71,3 +86,6 @@ class OfferPage extends Page {
 }
 
 module.exports = new OfferPage();
+
+
+
