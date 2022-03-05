@@ -2,7 +2,7 @@ const Page = require('./page');
 const fs = require('fs');
 const { assert } = require('chai');
 const path = require('path');
-let existingItems;
+let existingItems, today;
 
 class OfferPage extends Page {
 
@@ -11,6 +11,7 @@ class OfferPage extends Page {
     get nextPageChevron() { return $('i.icon-chevron-right') };
     get items() { return $$('ul.product-list>li.js-list') };
 
+    
     getExistingItems() {
         existingItems = [];
         const directoryPath = path.join('screenshots/');
@@ -20,6 +21,7 @@ class OfferPage extends Page {
                 existingItems.push(fileName);
             });
         });
+        console.log(existingItems.length);
         return existingItems;
     }
 
@@ -29,6 +31,7 @@ class OfferPage extends Page {
 
     findBargains() {
         let offerNumber, pageCount, itemHTML, priceNow, priceWas, itemOne, itemCounter = 0, currentPage = 1;
+        this.getTodayDate();
         this.offerNumberWrapper.waitForDisplayed({ timeout: 60000 })
         offerNumber = this.offerNumberWrapper.getText();
         pageCount = (this.pageCountWrapper.getText().trim().split(' '))[1];
@@ -65,11 +68,9 @@ class OfferPage extends Page {
         let percent, name, filePath;
         percent = ((1 - (priceNow / priceWas)) * 100).toFixed(0);
         if (percent >= Number(discount)) {
-        name = item.$('h2').getText().split('\n').join(' ').split('/').join(' ');
+            name = item.$('h2').getText().split('\n').join(' ').split('/').join(' ');
             let itemName = percent + ' ' + name + '.png';
 
-            let date = new Date();
-            let today = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
             filePath = 'screenshots/' + today + '--> ' + percent + ' ' + name + '.png';
 
             if (!existingItems.includes(itemName)) {
@@ -82,6 +83,11 @@ class OfferPage extends Page {
                 this.removeHighlight(item.$('div.product-content'));
             }
         }
+    }
+
+    getTodayDate() {
+        let date = new Date();
+        return today = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
     }
 }
 
