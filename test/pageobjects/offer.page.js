@@ -21,7 +21,6 @@ class OfferPage extends Page {
                 existingItems.push(fileName);
             });
         });
-        console.log(existingItems.length);
         return existingItems;
     }
 
@@ -69,9 +68,9 @@ class OfferPage extends Page {
         percent = ((1 - (priceNow / priceWas)) * 100).toFixed(0);
         if (percent >= Number(discount)) {
             name = item.$('h2').getText().split('\n').join(' ').split('/').join(' ');
-            let itemName = percent + ' ' + name + '.png';
+            let itemName = percent + '% Off (Now $' + priceNow + ') ' + name + '.png';
 
-            filePath = 'screenshots/' + today + '--> ' + percent + ' ' + name + '.png';
+            filePath = 'screenshots/' + today + '--> ' + percent + '% Off (Now $' + priceNow + ') ' + name + '.png';
 
             if (!existingItems.includes(itemName)) {
                 item.scrollIntoView(false);

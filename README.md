@@ -12,6 +12,6 @@ Run npm install in your console and it will download all the packages
 wdio.conf.js in the project is the main config file.
 To run the bot, just type "npm run dm" in terminal and run it.
 The default discount rate is 20%, to change it you can use "DISCOUNT=X npm run dm" instead, where X is the discount rate for example "DISCOUNT= 45 npm run dm" will only captured items are discounted 45% and more.
-The results of the project are stored as screenshots in the screenshots folder as d-m-yyyy --> X item name.
+The results of the project are stored as screenshots in the screenshots.
 After running the bot for the first time, in the next runs, only items which have not been added before will be added and the date at the starts of the file name helps to be identified easily.
 
