@@ -1,4 +1,5 @@
-const discount = process.env.DISCOUNT || 20;
+const fs = require('fs');
+const discount = process.env.DISCOUNT || 30;
 exports.config = {
     //
     // ====================
@@ -18,7 +19,7 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './test/specs/**/*.js'
+        './test/specs/**/*.js',
     ],
     // Patterns to exclude.
     exclude: [
@@ -40,20 +41,23 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 3,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://docs.saucelabs.com/reference/platforms-configurator
     //
     capabilities: [{
-    
+
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
+        maxInstances: 3,
         //
         browserName: 'chrome',
+        // 'goog:chromeOptions': {
+        //     args: ['--headless', '--disable-gpu']
+        // },
         acceptInsecureCerts: true
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
@@ -107,11 +111,12 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['chromedriver'],
-    
+    services:
+        ['chromedriver'],
+
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
-    // see also: https://webdriver.io/docs/frameworks
+    // see also: https://webdriver.io/docs/frameworks.html
     //
     // Make sure you have the wdio adapter package for the specific framework installed
     // before running any tests.
@@ -128,22 +133,43 @@ exports.config = {
     //
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
-    // see also: https://webdriver.io/docs/dot-reporter
+    // see also: https://webdriver.io/docs/dot-reporter.html
     reporters: ['spec'],
 
 
-    
+
     //
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 6000000
+        timeout: 60000000
     },
     //
     // =====
     // Hooks
     // =====
+
+    afterStep: function (test, context, { error, result, duration, passed, retries }) {
+        if (error) {
+            browser.takeScreenshot();
+        }
+    },
+
+    afterTest: function (test, context, { error, result, duration, passed, retries }) {
+
+        if (passed != true) {
+            console.log("###########################   TEST FAILED : " + test.title + "  ###################################");
+            browser.saveScreenshot("errorScreenshot/" + test.title + " Error.png");
+            console.log(`----->>> Page URL: ${browser.getUrl} <<<-----`);
+        }
+
+        if (error == true) {
+            console.log("###########################   TEST FAILED : " + test.title + "  ###################################");
+            browser.saveScreenshot("errorScreenshot/" + test.title + " Error.png");
+            console.log(`----->>> Page URL: ${browser.getUrl} <<<-----`);
+        }
+    },
     // WebdriverIO provides several hooks you can use to interfere with the test process in order to enhance
     // it and to build services around it. You can either apply a single function or an array of
     // methods to it. If one of them returns with a promise, WebdriverIO will wait until that promise got
@@ -153,8 +179,11 @@ exports.config = {
      * @param {Object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    // onPrepare: function (config, capabilities) {
-    // },
+    onPrepare: function (config, capabilities) {
+        if (fs.existsSync('errorScreenshot/')) {
+            fs.rmSync('errorScreenshot/', { recursive: true, force: true });
+        }
+    },
     /**
      * Gets executed before a worker process is spawned and can be used to initialise specific service
      * for that worker as well as modify runtime environments in an async fashion.
@@ -175,6 +204,9 @@ exports.config = {
      */
     beforeSession: function (config, capabilities, specs) {
         global.discount = discount;
+        if (!fs.existsSync('errorScreenshot/')) {
+            fs.mkdirSync('errorScreenshot/');
+        }
     },
     /**
      * Gets executed before test execution begins. At this point you can access to all global

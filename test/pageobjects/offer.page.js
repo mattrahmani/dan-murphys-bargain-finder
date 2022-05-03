@@ -54,6 +54,7 @@ class OfferPage extends Page {
                 }
             })
             if (currentPage < pageCount) {
+                this.nextPageChevron.scrollIntoView();
                 this.nextPageChevron.click();
                 browser.waitUntil(() => this.items[0].$('span.title').getText() != itemOne, { timeout: 30000 });
             }

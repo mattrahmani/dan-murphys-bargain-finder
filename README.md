@@ -1,7 +1,7 @@
 # dan-murphys-bargain-finder
 
 This Robot is able to find discounted products in Dan Murphy's online store.
-A screenshots is taken for products come with 20% discount and more. 
+A screenshots is taken for products come with 30% discount and more. 
 
 Steps to run the bot on your local:
 
