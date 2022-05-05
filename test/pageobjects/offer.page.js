@@ -6,12 +6,17 @@ let existingItems, today;
 
 class OfferPage extends Page {
 
-    get offerNumberWrapper() { return $('span.count.bold') };
+    get offerNumberWrapper() { return $('div.filter.ng-star-inserted div.ng-star-inserted:nth-child(1) span:nth-child(1)') };
+    // get offerNumberWrapper() { return $('span.count.bold') };
     get pageCountWrapper() { return $('span.page-count') };
     get nextPageChevron() { return $('i.icon-chevron-right') };
     get items() { return $$('ul.product-list>li.js-list') };
+    get loginLnk() { return $('div#system-header-login') };
+    get emailInput() { return $('input[type=email]') };
+    get passwordInput() { return $('input[type=password]') };
+    get loginBtn() { return $('button.btn-success') };
+    get panelGroup() { return $('div.panel-group') };
 
-    
     getExistingItems() {
         existingItems = [];
         const directoryPath = path.join('screenshots/');
@@ -33,7 +38,11 @@ class OfferPage extends Page {
         this.getTodayDate();
         this.offerNumberWrapper.waitForDisplayed({ timeout: 60000 })
         offerNumber = this.offerNumberWrapper.getText();
-        pageCount = (this.pageCountWrapper.getText().trim().split(' '))[1];
+        if (this.pageCountWrapper.isExisting()) {
+            pageCount = (this.pageCountWrapper.getText().trim().split(' '))[1];
+        } else {
+            pageCount = 1;
+        }
         do {
             console.log('Page ' + currentPage + ' of ' + pageCount);
             itemOne = this.items[0].$('span.title').getText();
@@ -88,6 +97,17 @@ class OfferPage extends Page {
     getTodayDate() {
         let date = new Date();
         return today = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+    }
+
+    login(email, password) {
+        browser.deleteAllCookies();
+        this.loginLnk.click();
+        browser.pause(3000);
+        this.emailInput.setValue(email);
+        this.passwordInput.setValue(password);
+        browser.pause(2000);
+        this.loginBtn.click();
+        this.panelGroup.waitForExist({ reverse: true, timeout: 60000 });
     }
 }
 
