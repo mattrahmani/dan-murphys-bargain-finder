@@ -8,14 +8,15 @@ class OfferPage extends Page {
 
     get offerNumberWrapper() { return $('div.filter.ng-star-inserted div.ng-star-inserted:nth-child(1) span:nth-child(1)') };
     // get offerNumberWrapper() { return $('span.count.bold') };
-    get pageCountWrapper() { return $('span.page-count') };
-    get nextPageChevron() { return $('i.icon-chevron-right') };
+    get pageCountWrapper() { return $('span.pagination-container__pagetext') };
+    get nextPageChevron() { return $('mat-icon=chevron_right') };
     get items() { return $$('ul.product-list>li.js-list') };
     get loginLnk() { return $('div#system-header-login') };
     get emailInput() { return $('input[type=email]') };
     get passwordInput() { return $('input[type=password]') };
     get loginBtn() { return $('button.btn-success') };
     get panelGroup() { return $('div.panel-group') };
+    get toastContainer() { return $('#toast-container .dans-toaster__body') };
 
     getExistingItems() {
         existingItems = [];
@@ -101,6 +102,9 @@ class OfferPage extends Page {
 
     login(email, password) {
         browser.deleteAllCookies();
+        if (this.toastContainer.isExisting()) {
+            this.toastContainer.$('.dans-alert__btn-close-icon').click();
+        }
         this.loginLnk.click();
         browser.pause(3000);
         this.emailInput.setValue(email);
