@@ -10,13 +10,14 @@ class OfferPage extends Page {
     // get offerNumberWrapper() { return $('span.count.bold') };
     get pageCountWrapper() { return $('span.pagination-container__pagetext') };
     get nextPageChevron() { return $('mat-icon=chevron_right') };
-    get items() { return $$('ul.product-list>li.js-list') };
+    get items() { return $$('ul.search-results__product-list>li.js-list') };
     get loginLnk() { return $('div#system-header-login') };
     get emailInput() { return $('input[type=email]') };
     get passwordInput() { return $('input[type=password]') };
     get loginBtn() { return $('button.btn-success') };
     get panelGroup() { return $('div.panel-group') };
     get toastContainer() { return $('#toast-container .dans-toaster__body') };
+    get loadMoreBtn() { return $('button.infinite-loader__load-more-button') };
 
     getExistingItems() {
         existingItems = [];
@@ -37,7 +38,7 @@ class OfferPage extends Page {
     findBargains() {
         let offerNumber, pageCount, itemHTML, priceNow, priceWas, itemOne, itemCounter = 0, currentPage = 1;
         this.getTodayDate();
-        this.offerNumberWrapper.waitForDisplayed({ timeout: 60000 })
+        this.offerNumberWrapper.waitForDisplayed({ timeout: 240000 })
         offerNumber = this.offerNumberWrapper.getText();
         if (this.pageCountWrapper.isExisting()) {
             pageCount = (this.pageCountWrapper.getText().trim().split(' '))[1];
