@@ -1,7 +1,7 @@
 module.exports = class Page {
 
     open (path) {
-        browser.maximizeWindow();
+        // browser.maximizeWindow();
         browser.deleteAllCookies();
         return browser.url(`/${path}`)
     }

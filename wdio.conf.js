@@ -42,6 +42,8 @@ exports.config = {
     // from the same test should run tests.
     //
     maxInstances: 3,
+
+    
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -53,12 +55,16 @@ exports.config = {
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
         maxInstances: 3,
-        //
+
         browserName: 'chrome',
-        // 'goog:chromeOptions': {
-        //     args: ['--headless', '--disable-gpu']
-        // },
+        browserVersion: '114.0',
+        'goog:chromeOptions': {
+            args: ['--disable-gpu', 'window-size=2048,1152'],
+            binary: '/Applications/Google Chrome 114.app/Contents/MacOS/Google Chrome',  // Path to Chrome v114
+            
+        },
         acceptInsecureCerts: true
+        
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs

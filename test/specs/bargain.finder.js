@@ -13,7 +13,7 @@ describe('Dan Murphy bargain finder machine', () => {
     });
 
     it('Should find bargains on dan murphy website', () => {
-        onOfferPage.open('current-offers?size=2000');
+        onOfferPage.open('list/member-offers?size=85');
         onOfferPage.getExistingItems();
         onOfferPage.findBargains();
     });
